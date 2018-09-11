@@ -1,0 +1,39 @@
+<div class="container" *ngIf="authService.isAuthenticated()">
+    <div class="container first-container">
+        <div class="row mb-5">
+          <div class="col-md-3 col-sm-6">
+              <div class="card" routerLink="/clients">
+                  <img class="card-img-top img-fluid" src="../../assets/icons/user.png" alt="Card image cap">
+                  <div class="card-body">
+                    <h3 class="card-text text-center">Clients</h3>
+                  </div>
+                </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+              <div class="card square" routerLink="/properties">
+                  <img class="card-img-top img-fluid" src="../../assets/icons/house.png" alt="Card image cap">
+                  <div class="card-body">
+                    <h3 class="card-text text-center">Properties</h3>
+                  </div>
+                </div>
+
+        </div>
+        <div class="col-md-3 col-sm-6" *ngIf="authService.isAdmin">
+            <div class="card" routerLink="/payments">
+                <img class="card-img-top img-fluid" src="../../assets/icons/payment.png" alt="Card image cap">
+                <div class="card-body">
+                  <h3 class="card-text text-center">Payments</h3>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-3 col-sm-6" *ngIf="authService.isAdmin">
+            <div class="card" routerLink="/notifications">
+              <span class="notify-badge" *ngIf="unreadNotifications">{{unreadNotifications.length}}</span>
+                <img class="card-img-top img-fluid" src="../../assets/icons/notification.png" alt="Card image cap">
+                <div class="card-body">
+                  <h3 class="card-text text-center">Notifications</h3>
+                </div>
+              </div>
+        </div>
+        </div>
+</div>

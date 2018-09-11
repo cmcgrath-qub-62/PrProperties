@@ -1,0 +1,75 @@
+.object-img{
+    max-width: 150px;
+    display: inline-block;
+ }
+
+ .property-row{
+     margin-bottom: 10px;
+ }
+
+ .card{
+     margin-bottom: 10px;
+ }
+
+ h4{
+    font-size: 20pt;
+}
+
+h6{
+    font-size:16pt;
+}
+
+p{
+    font-size: 12pt;
+}
+
+ .btn-green{
+    background-color: #aad8cd;
+    font-size: 10pt;
+    display: inline-block;
+    border:0px;
+
+}
+
+.list-photo{
+    max-width: 100%; 
+    height: auto; 
+}
+
+.no-padding{
+    padding: 0px;
+}
+
+.container-fluid{
+    padding: 0px;
+}
+
+.card{
+    display: inline-block;
+    width: 100%;
+}
+
+.card-img-top{
+    max-height: 200px;
+    object-fit: cover;
+    align-content: center; 
+}
+
+
+ @media all and (max-width: 500px) {
+    .card-title-custom{
+        font-size: 10pt;
+    }
+
+    .card-text-custom{
+        font-size: 9pt;
+    }
+
+    .list-photo{
+        width: auto; 
+        height: 100px; 
+        object-fit: cover;
+    }
+
+
+}

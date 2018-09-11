@@ -1,0 +1,80 @@
+<div class="container list-object" *ngIf="client">
+        <a [routerLink]="['/clients', client.id]" class="btn btn-primary">Profile</a>
+        <div class="text-center mb-5" *ngIf="loading">
+                <i class="fa fa-spinner fa-spin center-block" style="font-size:24px"></i>
+              </div>
+    <h3 *ngIf="client">Add Contract for Tenant - {{client.firstName}} {{client.lastName}}</h3>
+    <div class="alert" [ngClass]="{ 'alert-success': saveSuccess, 'alert-warning': !saveSuccess }" *ngIf="userMessage">
+            {{userMessage}}
+            <button class="btn btn-green m-2" [routerLink]="['/clients']"> Back To Clients</button>
+          </div>
+    <form #selectPropertyForm="ngForm">
+        <div class="form-group">
+            <label for="landlordId" class="field-name" >Property</label>
+            <select class="form-control" input type="number" required  id="landlordId" name="landlordId" [(ngModel)]="propertyId" (ngModelChange)="getRooms(propertyId, rooms)" placeholder="Select Property">
+            <option *ngFor="let property of properties" [value]=property.id> {{property.firstLineAddress}}</option>
+        </select>
+        </div>
+    </form>
+</div>
+
+    <div class="container list-object" *ngIf="contract">
+        <form #addContractForm="ngForm" *ngIf="rooms && !rooms.length==0">
+        <div class="form-group">
+            <label for="roomId" class="field-name">Room</label>
+            <select class="form-control" input type="number" required  id="roomId" name="roomId" [(ngModel)]="contract.roomId" placeholder="Select Property">
+            <option *ngFor="let room of rooms" [value]=room.id> {{room.name}}</option>
+        </select>
+        </div>
+
+    <div class="form-group" [class.has-error]="dateFrom.invalid && addContractForm.submitted">
+        <label for="dateFrom" class="field-name datepicker" >Date From</label>
+        <input #dateFrom="ngModel" type="date" class="form-control" required id="dateFrom" name="dateFrom" [(ngModel)]="contract.dateFrom" placeholder="Enter Date From">
+        <div *ngIf="dateFrom.invalid && addContractForm.submitted">
+            Date From is Required
+          </div>
+      </div>
+
+    <div class="form-group" [class.has-error]="dateTo.invalid && addContractForm.submitted">
+        <label for="dateTo" class="field-name datepicker" >Date To</label>
+        <input #dateTo="ngModel" type="date" class="form-control" required id="dateTo" name="dateTo" [(ngModel)]="contract.dateTo" placeholder="Enter Date To">
+        <div *ngIf="dateTo.invalid && addContractForm.submitted">
+            Date To is Required
+            </div>
+        </div>
+
+    <div class="form-group" [class.has-error]="monthlyAmount.invalid && addContractForm.submitted">
+        <label for="monthlyAmount" class="field-name" >Monthly Amount</label>
+        <input #monthlyAmount="ngModel" type="number" class="form-control" required id="monthlyAmount" name="monthlyAmount" [(ngModel)]="contract.monthlyAmount" placeholder="Enter Monthly Amount">
+        <div *ngIf="monthlyAmount.invalid && addContractForm.submitted">
+            Monthly Amount is Required
+            </div>
+        </div>
+    
+    <div class="form-group">
+        <label for="depositPaid" class="field-name" >Desposit Paid</label>
+        <input #depositPaid="ngModel" type="checkbox" class="form-control" required id="depositPaid" name="depositPaid" [(ngModel)]="contract.depositPaid">
+    </div>
+
+    <div class="form-group">
+        <label for="paymentTypeId" class="field-name">Payment Type</label>
+        <select class="form-control" input type="number" required  id="paymentTypeId" name="paymentTypeId" [(ngModel)]="contract.paymentTypeId" placeholder="Select Payment Method">
+        <option *ngFor="let paymentType of paymentTypes" [value]=paymentType.id> {{paymentType.type}}</option>
+    </select>
+    </div>
+
+    <div class="form-group" [class.has-error]="paymentReference.invalid && addContractForm.submitted" *ngIf="contract.paymentTypeId==1">
+        <label for="paymentTypeId" class="field-name" >Payment Reference </label>
+        <input #paymentReference="ngModel" required type="string" class="form-control" name="paymentReference" id="paymentReference" [(ngModel)]="contract.paymentReference" placeholder="Enter Payment Reference">
+        <div *ngIf="paymentReference.invalid && addContractForm.submitted">
+            Payment Reference is Required
+          </div>
+      </div>
+
+      <button type="submit" class="btn btn-green" (click)="addContract(contract)"> Submit</button>
+      <button type="submit" class="btn btn-green" routerLink="/clients"> Cancel</button>
+
+        </form>
+
+
+</div>

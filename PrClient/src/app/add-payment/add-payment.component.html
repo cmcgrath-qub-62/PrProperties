@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="card">
+      <div class="alert alert-danger" role="alert" *ngIf="!success">
+          <strong>Error</strong> {{message}}
+        </div>
+        <div class="alert" [ngClass]="{ 'alert-success': saveSuccess, 'alert-warning': !saveSuccess }" *ngIf="userMessage">
+            {{userMessage}}
+          </div>
+    <h4>Add Payments</h4>
+    <input type="file" name="files" class="form-control" #uploads (change)="onChange(uploads.files, payments)" multiple value="process"
+    />
+
+    <div *ngIf="payments.length > 0">
+      <table class="table table-striped table-bordered mt-5">
+        <thead>
+          <tr>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+            <th scope="col">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <th scope="row">{{payment.amount}}</th>
+            <td>{{payment.date}}</td>
+            <td>{{payment.reference}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="col-sm-4">
+        <button class='btn primary' (click)="postPayments(payments)">Add Payments to Database</button>
+      </div>
+    </div>
+  </div>
+
+</div>

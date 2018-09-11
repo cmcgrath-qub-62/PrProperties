@@ -1,0 +1,25 @@
+.small-padding{
+    padding: 5px;
+}
+
+.card-img-top{
+    height: 250px;;
+    width: auto; 
+    object-fit: cover;
+    align-content: center; 
+}
+.primary-text{
+    font-size: 14pt;
+}
+h4{
+    font-size: 20pt;
+}
+
+h6{
+    font-size:16pt;
+}
+
+p{
+    font-size: 12pt;
+}
+
