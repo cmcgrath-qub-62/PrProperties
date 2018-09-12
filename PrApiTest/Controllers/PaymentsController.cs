@@ -11,6 +11,7 @@ using PrApi.Repositories;
 
 namespace PrApi.Controllers
 {
+    //comments where necessary
     [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     public class PaymentsController : Controller

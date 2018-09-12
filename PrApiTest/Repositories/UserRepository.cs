@@ -57,19 +57,21 @@ namespace PrApi.Repositories
             return propertyImages;
         }
 
+        //Get all Property Images
         public IEnumerable<PropertyImage> GetAllPropertiesImages()
         {
             var propertyImage = _db.PropertyImages;
             return propertyImage;
         }
 
-
+        //Get Specific User
         public Client GetUser(int id)
         {
             var user = _db.Users.FirstOrDefault(b => b.Id == id);
             return user;
         }
 
+        //Delete Property Image if exists
         public string DeletePropertyImage(PropertyImage image, string fileName)
         {
             if (System.IO.File.Exists(fileName))
@@ -83,6 +85,7 @@ namespace PrApi.Repositories
             
         }
 
+        //Delete Room Image if exists
         public string DeleteRoomImage(RoomImage image, string fileName)
         {
             if (System.IO.File.Exists(fileName))
@@ -96,12 +99,14 @@ namespace PrApi.Repositories
 
         }
 
+        //Get specific Property Image
         public PropertyImage GetPropertyImage(int imageId)
         {
             var image = _db.PropertyImages.FirstOrDefault(i => i.Id == imageId);
             return image;
         }
 
+        //Add Client Photo
         public Client AddUserImage(int id, string path)
         {
             var user = _db.Users.FirstOrDefault(b => b.Id == id);
@@ -114,6 +119,7 @@ namespace PrApi.Repositories
             return user;
         }
 
+        //Get All Users
         public IEnumerable<Client> GetUsers()
         {
             var users = _db.Users
@@ -121,6 +127,7 @@ namespace PrApi.Repositories
             return users;
         }
 
+        //Get USers by Parameter Type ID
         public IEnumerable<Client> GetUserByType(int clientTypeId)
         {
             var users = _db.Users
@@ -128,13 +135,15 @@ namespace PrApi.Repositories
             return users;
         }
 
+        //Add client 
         public Client AddUser(Client user)
         {
             _db.Users.Add(user);
             _db.SaveChanges();
             return user;
         }
-
+        
+        //Update Client
         public Client UpdateUser(Client user)
         {
 
@@ -143,6 +152,7 @@ namespace PrApi.Repositories
             return user;
         }
 
+        //Add Property
         public Property AddProperty(Property property)
         {
             _db.Properties.Add(property);
@@ -150,6 +160,7 @@ namespace PrApi.Repositories
             return property;
         }
 
+        //Update Property
         public Property UpdateProperty(Property property)
         {
             _db.Entry(property).State = EntityState.Modified;
@@ -157,6 +168,7 @@ namespace PrApi.Repositories
             return property;
         }
 
+        //Get Client Types
         public IEnumerable<ClientType> GetClientTypes()
         {
             var clientTypes = _db.ClientTypes;
@@ -164,33 +176,16 @@ namespace PrApi.Repositories
 
         }
 
-        public IEnumerable<NextOfKin> GetNextOfKins()
-        {
-            var nextOfKins = _db.NextOfKins
-                .Include(c => c.Client); 
-            return nextOfKins;
-        }
-
-        public NextOfKin GetNextOfKin(int clientId)
-        {
-            var nextOfKin = _db.NextOfKins.Include(n => n.Client).FirstOrDefault(b => b.ClientId == clientId);
-            return nextOfKin;
-        }
-
-        public NextOfKin AddNextOfKin(NextOfKin nextOfKin)
-        {
-            _db.NextOfKins.Add(nextOfKin);
-            _db.SaveChanges();
-            return nextOfKin;
-        }
-
+        //Get all Rooms
         public IEnumerable<Room> GetRooms()
         {
             var rooms = _db.Rooms
+                    //include inherited class property
                 .Include(p => p.Property);
             return rooms;
         }
 
+        //Get specific Room
         public Room GetRoom(int id)
         {
             var room = _db.Rooms.Include(r => r.Property)
@@ -198,6 +193,7 @@ namespace PrApi.Repositories
             return room;
         }
 
+        //Get Room Images by Room
         public IEnumerable<RoomImage> GetRoomImages(int roomId)
         {
             var roomImages = _db.RoomImages.Include(r => r.Room)
@@ -205,12 +201,14 @@ namespace PrApi.Repositories
             return roomImages;
         }
 
+        //Get Rooms by Property
         public IEnumerable<Room> GetRoomsByProperty(int propertyId)
         {
             var rooms = _db.Rooms.Where(b => b.PropertyId == propertyId);
             return rooms;
         }
 
+        //Add Room
         public Room AddRoom(Room room)
         {
             _db.Rooms.Add(room);
@@ -218,8 +216,10 @@ namespace PrApi.Repositories
             return room;
         }
 
+        //Add Room Image
         public RoomImage AddRoomImage(int roomId, string path)
         {
+            //New instance of RoomImage Created to add to DB
             RoomImage roomImage = new RoomImage();
             roomImage.RoomId = roomId;
             roomImage.ImagePath = path;
@@ -228,8 +228,10 @@ namespace PrApi.Repositories
             return roomImage;
         }
 
+        //Add Property Image
         public PropertyImage AddPropertyImage(int propertyId, string path)
         {
+            //New instance of PropertyImage created to add to Database
             PropertyImage propertyImage = new PropertyImage();
             propertyImage.PropertyId = propertyId;
             propertyImage.ImagePath = path;
@@ -238,6 +240,7 @@ namespace PrApi.Repositories
             return propertyImage;
         }
 
+        //Get Contract by Payment Reference
         public Contract GetContractByPaymentReference(string paymentReference)
         {
             var contract = _db.Contracts.Include(r => r.Client)
@@ -245,6 +248,7 @@ namespace PrApi.Repositories
             return contract;
         }
 
+        //Add Payments
         public Payment[] AddPayments(Payment[] payments)
         {
             Payment[] paymentsArray = payments;
@@ -254,9 +258,11 @@ namespace PrApi.Repositories
             return paymentsArray;
         }
         
+        //Return all COntracts
         public IEnumerable<Contract> GetContracts()
         {
             var contracts = _db.Contracts
+                    //include inherited calsses
                .Include(r => r.Room)
                .Include(u => u.Client)
               .Include(p => p.PaymentType)
@@ -265,9 +271,11 @@ namespace PrApi.Repositories
             return contracts;
         }
 
+        //Get specific Contract
         public Contract GetContract(int id)
         {
             var contract = _db.Contracts
+                //include inherit classes
                 .Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
@@ -281,58 +289,70 @@ namespace PrApi.Repositories
         {
             //Get current time
             DateTime date = DateTime.Now;
-            //Include 
+            //Include all inherited classes
             var contract = _db.Contracts.Include(r => r.Room)
                                         .Include(r => r.Room.Property)
                                         .Include(u => u.Client)
                                         .Include(p => p.PaymentType).FirstOrDefault(r => r.RoomId == roomId
+                                                                      // Compare contract dates to todays date
                                                                       && (r.DateFrom.CompareTo(date) <= 0)
                                                                       && (r.DateTo.CompareTo(date) >= 0));
             return contract;
         }
 
+        //get Old Contracts by date
         public IEnumerable<Contract> GetOldContractsByRoom(int roomId)
         {
             DateTime date = DateTime.Now;
+            //include all inherited classes
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compare contract dates to current date
                 .Include(c => c.Room.Property).Where(r => r.DateTo.CompareTo(date) < 0 && r.DateFrom.CompareTo(date) < 0 && r.RoomId == roomId);
             return contracts;
         }
 
+        //get upcoming contracts by room
         public IEnumerable<Contract> GetUpcomingContractsByRoom(int roomId)
         {
             DateTime date = DateTime.Now;
+            // include inherited classes
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compare contract dates to current date 
                 .Include(c => c.Room.Property).Where(r => r.DateTo.CompareTo(date) > 0 && r.DateFrom.CompareTo(date) > 0 && r.RoomId == roomId);
             return contracts;
         }
 
+        //get upcoming leases by property
         public IEnumerable<Lease> GetUpcomingLeasesByProperty(int propertyId)
         {
             DateTime date = DateTime.Now;
+            //compare lease dates to current date
             var leases = _db.Leases.Where(l => l.DateTo.CompareTo(date) > 0 && l.DateFrom.CompareTo(date) > 0);
             return leases;
         }
 
+        //get old leases by property
         public IEnumerable<Lease> GetOldLeasesByProperty(int propertyId)
         {
             DateTime date = DateTime.Now;
+            //Compare Lease Dates current date
             var leases = _db.Leases.Where(l => l.DateTo.CompareTo(date) < 0 && l.DateFrom.CompareTo(date) < 0);
             return leases;
         }
 
-        
-
+        // will return list of Property Images, 1 for each Property
         public IEnumerable<PropertyImage> GetImageForEachProperty()
         {
             var properties = _db.Properties;
             List<PropertyImage> images = new List<PropertyImage>();
+            //for each property in the database
             foreach (Property property in properties)
             {
+                //get one image and add to list
                 var image = _db.PropertyImages.FirstOrDefault(pi => pi.PropertyId == property.Id);
                 if (image != null)
                 {
@@ -344,12 +364,15 @@ namespace PrApi.Repositories
             return images;
         }
 
+        //will return list of Room Images, 1 for every room in a particular property
         public IEnumerable<RoomImage> GetImageForEachRoomInProperty(int propertyId)
         {
             var rooms = _db.Rooms.Where(r => r.PropertyId == propertyId);
             List<RoomImage> images = new List<RoomImage>();
+            //for each room in that property
             foreach (Room room in rooms)
             {
+                //get one image and add to list
                 var image = _db.RoomImages.FirstOrDefault(ri => ri.RoomId == room.Id);
                 if (image != null)
                 {
@@ -359,22 +382,27 @@ namespace PrApi.Repositories
             return images;
         }
 
+        //get specific room images
         public RoomImage GetRoomImage(int imageId)
         {
             var image = _db.RoomImages.FirstOrDefault(r => r.Id == imageId);
             return image;
         }
 
+        //get active lease for a property if exists
         public Lease GetActiveLeaseByProperty(int propertyId)
         {
+            //get current date
             DateTime date = DateTime.Now;
             var lease = _db.Lease.Include(l => l.Property)
+                //compare lease with current date
                 .FirstOrDefault(r => r.PropertyId == propertyId
                                      && (r.DateFrom.CompareTo(date) <= 0)
                                      && (r.DateTo.CompareTo(date) >= 0));
             return lease;
         }
 
+        //get all Leasee for a specific property
         public IEnumerable<Lease> GetLeasesByProperty(int propertyId)
         {
             var leases = _db.Lease.Include(l => l.Property)
@@ -382,82 +410,98 @@ namespace PrApi.Repositories
             return leases;
         }
 
+        //get active Leases
         public IEnumerable<Lease> GetActiveLeases()
         {
+            //get current date 
             DateTime date = DateTime.Now;
+            //compare leases to current date
             var leases = _db.Lease.Include(l => l.Property).Where(l => l.DateFrom.CompareTo(date) <= 0 && l.DateTo.CompareTo(date) >= 0);
             return leases;
         }
 
-
-
+        //get active contract by client
         public Contract GetActiveContractByClient(int tenantId)
         {
             DateTime date = DateTime.Now;
+            //include inherited classes 
             var contract = _db.Contracts.Include(r => r.Room)
                                         .Include(c => c.Room.Property)
                                         .Include(u => u.Client)
+                                        //where equals parameter and compared to current date
                                         .Include(p => p.PaymentType).FirstOrDefault(r => r.ClientId == tenantId
                                                                                && (r.DateFrom.CompareTo(date) <= 0)
                                                                                  && (r.DateTo.CompareTo(date) >= 0));
             return contract;
         }
 
+        //return all active contracts by Property
         public IEnumerable<Contract> GetActiveContracts(int propertyId)
           {
               DateTime date = DateTime.Now;
               var contract = _db.Contracts.Include(r => r.Room)
                  .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                  // where compared to todays date
                 .Include(c => c.Room.Property).Where(r => r.Room.PropertyId == propertyId
                                                      && (r.DateFrom.CompareTo(date) <= 0)
                                                        && (r.DateTo.CompareTo(date) >= 0));
               return contract;
           }
 
+        //get all active contracts
         public IEnumerable<Contract> GetAllActiveContracts()
         {
             DateTime date = DateTime.Now;
             var contract = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compared to todays date
                 .Include(c => c.Room.Property).Where(r => r.DateFrom.CompareTo(date) <= 0
                                                           && r.DateTo.CompareTo(date) >= 0);
             return contract;
 
         }
 
+        //get all upcming contracts
         public IEnumerable<Contract> GetAllUpcomingContracts()
         {
             DateTime date = DateTime.Now;
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compared to current date
                 .Include(c => c.Room.Property).Where(r => r.DateTo.CompareTo(date) > 0 && r.DateFrom.CompareTo(date) > 0);
             return contracts;
         }
 
+        //get all old contracts
         public IEnumerable<Contract> GetAllOldContracts()
         {
             DateTime date = DateTime.Now;
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compared to current date
                 .Include(c => c.Room.Property).Where(r => r.DateTo.CompareTo(date) < 0 && r.DateFrom.CompareTo(date) < 0);
             return contracts;
         }
 
-
+        //add contract
         public Contract AddContract(Contract contract)
         {
+            //check overlap for room
            var overlapRoomExists = _db.Contracts.Any(c => c.RoomId == contract.RoomId
                                           && c.Overlaps(contract));
+            //check overlap for tenant
             var overlapTenantExists = _db.Contracts.Any(c => c.ClientId == contract.ClientId
                                                              && c.Overlaps(contract));
+            //check lease is avlid with dates
             bool leaseValid = CheckContractValidWithLease(contract);
-            
+            //if overlaps dont exist
             if (!overlapRoomExists && !overlapTenantExists && leaseValid)
             {
+                //add contract
                 _db.Contracts.Add(contract);
                 _db.SaveChanges();
                 return contract;
@@ -467,15 +511,20 @@ namespace PrApi.Repositories
 
         }
 
+        //check contract dates are valid with lease
         public bool CheckContractValidWithLease(Contract contract)
         {
             bool leaseValid;
+            //get room from contract
             var room = _db.Rooms.FirstOrDefault(r => r.Id == contract.RoomId);
+            //get lease's related to property
             var leases = _db.Leases.Where(l => l.PropertyId == room.PropertyId);
             foreach (Lease lease in leases)
             {
+                //compare each lease to property
                 if (lease.DateFrom.CompareTo(contract.DateFrom) <= 0 && lease.DateTo.CompareTo(contract.DateTo) >= 0)
                 {
+                    //set boolean value to true
                     leaseValid = true;
                     return leaseValid;
                 }
@@ -485,46 +534,58 @@ namespace PrApi.Repositories
             return leaseValid;
         }
 
+        //get upcoming contract by client
         public IEnumerable<Contract> GetUpcomingContractsByClient(int clientId)
         {
             DateTime date = DateTime.Now;
+            //include inherited classes
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compared to current date
                 .Include(c => c.Room.Property).Where(r => r.ClientId == clientId && r.DateTo.CompareTo(date) >= 0 && r.DateFrom.CompareTo(date) >= 0);
             return contracts;
         }
 
+        //get old contracts by client
         public IEnumerable<Contract> GetOldContractsByClient(int clientId)
         {
+
             DateTime date = DateTime.Now;
+            //include inherited classes
             var contracts = _db.Contracts.Include(r => r.Room)
                 .Include(u => u.Client)
                 .Include(p => p.PaymentType)
+                //compared to current date
                 .Include(c => c.Room.Property).Where(r => r.ClientId == clientId && r.DateTo.CompareTo(date) <= 0 && r.DateFrom.CompareTo(date) <= 0);
             return contracts;
         }
 
-
+        //get all leases
         public IEnumerable<Lease> GetLeases()
         {
             var leases = _db.Leases
+                    //include inherited classes
                 .Include(p => p.Property);
             return leases;
         }
 
+        //get specific Lease
         public Lease GetLease(int id)
         {
             var lease = _db.Leases.FirstOrDefault(b => b.Id == id);
             return lease;
         }
 
+        //Add Lease
         public Lease AddLease(Lease lease)
         {
+            //check for overlaps
             var overlapPropertyExists = _db.Lease.Any(l => l.PropertyId == lease.PropertyId
                                                            && l.Overlaps(lease) && l.Id != lease.Id);
             if (!overlapPropertyExists)
             {
+                //if no overlap add lease
                 _db.Leases.Add(lease);
                 _db.SaveChanges();
                 return lease;
@@ -536,10 +597,13 @@ namespace PrApi.Repositories
 
         }
 
+        //update lease
         public Lease UpdateLease(Lease lease)
         {
+            //check for overlaps
             var overlapPropertyExists = _db.Lease.Any(l => l.PropertyId == lease.PropertyId
                                                            && l.Overlaps(lease) && l.Id != lease.Id);
+            // if no overlap exists then
             if (!overlapPropertyExists)
             {
                 _db.Entry(lease).State = EntityState.Modified;
@@ -552,16 +616,19 @@ namespace PrApi.Repositories
             }
         }
 
+        //update contract
         public Contract UpdateContract(Contract contract)
         {
+            //check for overlaps
             var overlapRoomExists = _db.Contracts.Any(c => c.RoomId == contract.RoomId
                                                            && c.Overlaps(contract) && c.Id != contract.Id);
             var overlapTenantExists = _db.Contracts.Any(c => c.ClientId == contract.ClientId
                                                              && c.Overlaps(contract) && c.Id != contract.Id);
             bool leaseValid = CheckContractValidWithLease(contract);
-
+            //if no overlaps then 
             if (!overlapRoomExists && !overlapTenantExists && leaseValid)
             {
+                //save changes to db
                 _db.Entry(contract).State = EntityState.Modified;
                 _db.SaveChanges();
                 return contract;
@@ -610,15 +677,20 @@ namespace PrApi.Repositories
             }
         }
 
+        //delete lease
         public Lease DeleteLease(Lease lease)
         {
+            //ensure lease is upcoming
             DateTime date = DateTime.Now;
             if (lease.DateTo.CompareTo(date) <= 0 && lease.DateFrom.CompareTo(date) <= 0)
             {
+                //check any contracts fall during lease
                 var contract = _db.Contracts.Include(c=> c.Room).FirstOrDefault(c =>
                     c.DateFrom.CompareTo(lease.DateFrom) >= 0 && c.DateTo.CompareTo(lease.DateTo) <= 0 && c.Room.PropertyId == lease.PropertyId);
+                //if no overlapping contract
                 if (contract == null)
                 {
+                    //delete lease
                     _db.Lease.Remove(lease);
                     _db.SaveChanges();
                     lease.Id = 0;
@@ -629,8 +701,10 @@ namespace PrApi.Repositories
             return lease;
         }
 
+        //delete contract
         public Contract DeleteContract(Contract contract)
         {
+            //ensure contract is upcoming
             DateTime date = DateTime.Now;
             if (contract.DateFrom.CompareTo(date) >= 0 && contract.DateTo.CompareTo(date) >= 0)
             {
@@ -683,20 +757,21 @@ namespace PrApi.Repositories
             return property;
         }
 
-
-
+        //return payment types
         public IEnumerable<PaymentType> GetPaymentTypes()
         {
             var paymentTypes = _db.PaymentTypes;
             return paymentTypes;
         }
 
+        //get specific payment type
         public PaymentType GetPaymentType(int id)
         {
             var paymentType = _db.PaymentTypes.FirstOrDefault(b => b.Id == id);
             return paymentType;
         }
 
+        //addPaymentType
         public PaymentType AddPaymentType(PaymentType paymentType)
         {
             _db.PaymentTypes.Add(paymentType);
@@ -704,19 +779,22 @@ namespace PrApi.Repositories
             return paymentType;
         }
 
+        //Get Payments by User
         public IEnumerable<Payment> GetPaymentsByUser(int userId)
         {
+            //include inherited classes
             var payments = _db.Payments.Include(p => p.Contract)
                                          .Include(p => p.Contract.Room)
-                                        .Include(p => p.Contract.Client)
-                                        
+                                        .Include(p => p.Contract.Client)                                      
                                         .Include(p => p.Contract.Room.Property)
                 .Where(b => b.Contract.ClientId == userId);
             return payments;
         }
 
+        //get specific payment
         public Payment GetPayment(int id)
         {
+            //include inherited classes
             var payment = _db.Payments.Include(p => p.Contract)
                 .Include(p => p.Contract.Client)
                 .Include(p => p.Contract.Room)
@@ -725,9 +803,11 @@ namespace PrApi.Repositories
             return payment;
         }
 
+        //get all payments
         public IEnumerable<Payment> GetPayments()
         {
             var payments = _db.Payments.Include(p => p.Contract)
+                //include inherited classes
                 .Include(p => p.Contract.Client)
                 .Include(p => p.Contract.Room)
                 .Include(p => p.Contract.Room.Property);
@@ -735,6 +815,7 @@ namespace PrApi.Repositories
 
         }
 
+        //add payment
         public Payment AddPayment(Payment payment)
         {
             _db.Payments.Add(payment);
@@ -742,11 +823,14 @@ namespace PrApi.Repositories
             return payment;
         }
 
+        //check payment references against contracts
         public List<String> CheckValidPayments(Payment[] payments)
         {
+            //crete list for unrecognised references
             List<String> badReferences = new List<String>();
             foreach (Payment payment in payments)
             {
+                //for each payment check if contract exists
                 var contract = _db.Contracts.FirstOrDefault(c => c.PaymentReference == payment.Reference);
                 if (contract == null)
                 {
@@ -805,6 +889,7 @@ namespace PrApi.Repositories
             return contracts;
         }
 
+        //delete payment
         public Payment DeletePayment(Payment payment)
         {
             _db.Payments.Remove(payment);
@@ -812,25 +897,7 @@ namespace PrApi.Repositories
             return payment;
         }
 
-        public IEnumerable<LeaseNotification> GetLeaseNotifications()
-        {
-            var leaseNotifications = _db.LeaseNotifications;
-            return leaseNotifications;
-        }
-
-        public LeaseNotification GetLeaseNotification(int id)
-        {
-            var leaseNotification = _db.LeaseNotifications.FirstOrDefault(b => b.Id == id);
-            return leaseNotification;
-        }
-
-        public LeaseNotification AddLeaseNotification(LeaseNotification leaseNotification)
-        {
-            _db.LeaseNotifications.Add(leaseNotification);
-            _db.SaveChanges();
-            return leaseNotification;
-        }
-
+        //get all contract notifications
         public IEnumerable<ContractNotification> GetContractNotifications()
         {
             var contractNotifications = _db.ContractNotifications
@@ -838,12 +905,14 @@ namespace PrApi.Repositories
             return contractNotifications;
         }
 
+        //get specific contract notification
         public ContractNotification GetContractNotification(int id)
         {
             var contractNotification = _db.ContractNotifications.FirstOrDefault(b => b.Id == id);
             return contractNotification;
         }
 
+        //add contract notification
         public ContractNotification AddContractNotification(ContractNotification contractNotification)
         {
             _db.ContractNotifications.Add(contractNotification);
@@ -851,6 +920,7 @@ namespace PrApi.Repositories
             return contractNotification;
         }
 
+        //mark notificaiton as read
         public ContractNotification MarkAsRead(ContractNotification contractNotification)
         {
 

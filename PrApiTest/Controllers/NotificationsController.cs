@@ -24,6 +24,7 @@ namespace PrApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            //calls method add contract notifications
             _repository.AddContractNotifications(30);
             _repository.AddContractNotifications(60);
             _repository.AddContractNotifications(90);
@@ -32,7 +33,7 @@ namespace PrApi.Controllers
 
         }
 
-
+        //marks notification as read
         [HttpPost("asRead")]
         public IActionResult PostRead([FromBody]ContractNotification contractNotification
         )

@@ -13,6 +13,7 @@ using PrApi.Repositories;
 
 namespace PrApi.Controllers
 {
+    //comments where necessary
     [Authorize]
     [Route("api/[controller]")]
     public class PropertiesController : Controller
@@ -49,6 +50,7 @@ namespace PrApi.Controllers
             return Ok(properties);
         }
 
+        //post property
         [HttpPost]
         public IActionResult Post([FromBody]Property property)
         {
@@ -91,12 +93,13 @@ namespace PrApi.Controllers
             return Ok(propertyImages);
         }
 
+        //post image
         [HttpPost("deleteImage")]
         public IActionResult Post([FromBody]PropertyImage image)
         {
             var imageFromDb = _repository.GetPropertyImage(image.Id);
             string webRootPath = _hostingEnvironment.WebRootPath;
-
+            //change from explorer path to url path
             var imagePath = imageFromDb.ImagePath.Replace('/', '\\');
             var fullPath = Path.Combine(webRootPath,"uploads", imagePath);
             _repository.DeletePropertyImage(imageFromDb, fullPath);
@@ -106,6 +109,7 @@ namespace PrApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete([FromBody] Property property)
         {
+            //delete passed property
             var deleted = _repository.DeleteProperty(property);
             return StatusCode(201, deleted);
         }

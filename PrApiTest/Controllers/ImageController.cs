@@ -31,6 +31,7 @@ namespace PrApi.Controllers
         {
             try
             {
+                //recieve file and read details attached
                 var file = Request.Form.Files[0];
                 var assetId = HttpContext.Request.Form["assetId"];
                 var imageTypeFolder = HttpContext.Request.Form["imageType"];
@@ -41,17 +42,21 @@ namespace PrApi.Controllers
               
                 if (file.Length > 0)
                 {
+                    //get exstension and validate
                     string uploadFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     string ext = Path.GetExtension(uploadFileName);
                     if (ext == ".jpg" || ext == ".jpeg" || ext == ".png")
                     {
                         int assetIdInt = Int32.Parse(assetId);
+                        //creat timestamp for porperty images and room images
                         string time = DateTime.Now.ToString("hh.mm.ss.ffffff");
                         var fileName = imageTypeFolder.Equals("client") ? assetId + ext : assetId + time + ext;
                         apiPath = Path.Combine(imageTypeFolder, imageFolder, fileName);
+                        //change path from explorer reference to url reference
                         apiPath = apiPath.Replace('\\', '/');
                         // var uri = new Uri(apiPath);
 
+                        //3 different methods for each image type
                         if (imageTypeFolder.Equals("client"))
                         {
                             _repository.AddUserImage(assetIdInt, apiPath);
@@ -67,7 +72,7 @@ namespace PrApi.Controllers
                             _repository.AddPropertyImage(assetIdInt, apiPath);
                         }
 
-
+                        //generate path based on data attached to image
                         var fullPath = Path.Combine(webRootPath, rootFolderName, apiPath);
                         string fileFolder = Path.Combine(webRootPath, rootFolderName, imageTypeFolder, imageFolder);
                         if (!Directory.Exists(fileFolder))

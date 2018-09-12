@@ -11,6 +11,7 @@ using PrApi.Repositories;
 
 namespace PrApi.Controllers
 {
+    //comments where neccessary
     [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     public class LeaseController : Controller
@@ -79,13 +80,14 @@ namespace PrApi.Controllers
             return Ok(deleted);
         }
 
-
+        //post leases, for updating or adding new
         [HttpPost]
         public IActionResult Post([FromBody] Lease lease)
         {
-
+            //if id is 0, then it is a new Lease
             if (lease.Id == 0)
             {
+                //add lease if new
                 var added = _repository.AddLease(lease);
 
                 if (added.Id == 0)
@@ -97,6 +99,7 @@ namespace PrApi.Controllers
             }
 
             {
+                //else update
                 var updated = _repository.UpdateLease(lease);
                 if (updated.Id == 0)
                 {
@@ -108,6 +111,7 @@ namespace PrApi.Controllers
 
         }
 
+        //calls delete function
         [HttpPost("delete")]
         public IActionResult Delete([FromBody] Lease lease)
         {

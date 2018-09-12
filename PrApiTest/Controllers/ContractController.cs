@@ -11,6 +11,7 @@ using PrApi.Repositories;
 
 namespace PrApi.Controllers
 {
+    //comments where neccessary
     [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     public class ContractController : Controller
@@ -51,6 +52,7 @@ namespace PrApi.Controllers
             return Ok(contract);
         }
 
+        //returns contract where matches supplied payment reference
         [HttpGet("byPaymentReference{paymentRefernce}")]
         public Contract GetByPaymentReference(string paymentReference)
         {
@@ -65,6 +67,7 @@ namespace PrApi.Controllers
             return contract;
         }
 
+        //returns active contracts by property
         [HttpGet("activeByProperty{propertyId}")]
         public IActionResult GetActiveContracts(int propertyId)
         {
@@ -115,9 +118,11 @@ namespace PrApi.Controllers
             return Ok(contracts);
         }
 
+        //post contract
         [HttpPost]
         public IActionResult Post([FromBody] Contract contract)
         {
+            //ie if new contract
             if (contract.Id == 0)
             {
                 var added = _repository.AddContract(contract);
@@ -131,6 +136,7 @@ namespace PrApi.Controllers
             }
 
             {
+                //if contracts id is not 0, the contract is being updated rather than created
                 var updated = _repository.UpdateContract(contract);
                 if (updated.Id == 0)
                 {

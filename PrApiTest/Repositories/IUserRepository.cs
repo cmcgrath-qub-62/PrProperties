@@ -17,9 +17,6 @@ namespace PrApi.Repositories
         Client AddUser(Client user);
         Property AddProperty(Property property);
         IEnumerable<ClientType> GetClientTypes();
-        IEnumerable<NextOfKin> GetNextOfKins();
-        NextOfKin GetNextOfKin(int id);
-        NextOfKin AddNextOfKin(NextOfKin nextOfKin);
         Client DeleteClient(Client client);
         IEnumerable<Contract> GetUpcomingContractsByClient(int clientId);
         IEnumerable<Contract> GetOldContractsByClient(int clientId);
@@ -35,12 +32,9 @@ namespace PrApi.Repositories
         Payment DeletePayment(Payment payment);
         Client UpdateUser(Client user);
         Property UpdateProperty(Property property);
-
         IEnumerable<Client> GetUserByType(int id);
-
         IEnumerable<Property> GetByLandlordId(int id);
         Client AddUserImage(int id, string path);
-
         IEnumerable<Room> GetRooms();
         Room GetRoom(int id);
         Room AddRoom(Room room);
@@ -49,7 +43,6 @@ namespace PrApi.Repositories
         ContractNotification MarkAsRead(ContractNotification contractNotification);
         IEnumerable<Contract> GetAllActiveContracts();
         IEnumerable<Contract> GetAllUpcomingContracts();
-
         IEnumerable<Contract> GetContracts();
         Contract GetContract(int id);
         Contract AddContract(Contract contract);
@@ -63,29 +56,19 @@ namespace PrApi.Repositories
         Lease AddLease(Lease lease);
         IEnumerable<PropertyImage> GetPropertyImages(int propertyId);
         PropertyImage AddPropertyImage(int assetIdInt, string apiPath);
-
         IEnumerable<PaymentType> GetPaymentTypes();
         PaymentType GetPaymentType(int id);
         PaymentType AddPaymentType(PaymentType paymentType);
-
         IEnumerable<Payment> GetPayments();
         Payment GetPayment(int id);
         Payment AddPayment(Payment payment);
-
         List<String> CheckValidPayments(Payment[] payments);
         IEnumerable<Payment> GetPaymentsByUser(int userId);
-
         IEnumerable<Contract> AddContractNotifications(int days);
-
-
-        IEnumerable<LeaseNotification> GetLeaseNotifications();
-        LeaseNotification GetLeaseNotification(int id);
-        LeaseNotification AddLeaseNotification(LeaseNotification leaseNotification);
-
         IEnumerable<ContractNotification> GetContractNotifications();
         ContractNotification GetContractNotification(int id);
         ContractNotification AddContractNotification(ContractNotification contractNotification);
-       
+      
         Contract GetContractByPaymentReference(string paymentReference);
         IEnumerable<Lease> GetLeasesByProperty(int propertyId);
         Lease GetActiveLeaseByProperty(int propertyId);
